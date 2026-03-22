@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/Button";
 import { Drawer } from "@/components/Drawer";
-import { useState } from "react";
+import { SearchBar } from "@/components/SearchBar";
+import { useMemo, useState } from "react";
 import styled from "styled-components";
 
 const PreviewMain = styled.main`
@@ -94,9 +95,54 @@ const DrawerDemoText = styled.p`
   color: ${({ theme }) => theme.color.textMuted};
 `;
 
+/** Stand-in for entries you’ll load from JSON metadata files later */
+const SAMPLE_GUIDE_METADATA = [
+  {
+    id: "north-loop",
+    title: "North Loop Trail",
+    summary: "Moderate day hike with creek crossings and ridge views.",
+  },
+  {
+    id: "old-fire-road",
+    title: "Old Fire Road",
+    summary: "Wide gravel route; good for families and strollers.",
+  },
+  {
+    id: "summit-spur",
+    title: "Summit Spur",
+    summary: "Short steep climb from the main loop to the lookout.",
+  },
+] as const;
+
+const SearchFieldRow = styled.div`
+  margin-top: 0.75rem;
+`;
+
+const SearchSelection = styled.p`
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: ${({ theme }) => theme.color.foreground};
+`;
+
 export function HomePreview() {
   const [lastClick, setLastClick] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGuideLabel, setSelectedGuideLabel] = useState<string | null>(
+    null,
+  );
+
+  const searchMatches = useMemo(() => {
+    const normalized = searchQuery.trim().toLowerCase();
+    if (normalized === "") {
+      return [...SAMPLE_GUIDE_METADATA];
+    }
+    return SAMPLE_GUIDE_METADATA.filter((entry) => {
+      const haystack = `${entry.title} ${entry.summary}`.toLowerCase();
+      return haystack.includes(normalized);
+    });
+  }, [searchQuery]);
 
   return (
     <PreviewMain>
@@ -152,6 +198,37 @@ export function HomePreview() {
             ? "Click a button above — the label you pressed will show here."
             : `You clicked: ${lastClick}`}
         </ClickFeedback>
+      </Card>
+
+      <Card>
+        <CardTitle>Search</CardTitle>
+        <CardBody>
+          Focus the field or type to open a dropdown of matches. Click a row to
+          select — same idea once JSON metadata drives the list.
+        </CardBody>
+        <SearchFieldRow>
+          <SearchBar
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Search guides…"
+            aria-label="Search guides"
+            suggestions={searchMatches.map((entry) => ({
+              id: entry.id,
+              title: entry.title,
+              summary: entry.summary,
+            }))}
+            onSuggestionSelect={(suggestion) => {
+              setSelectedGuideLabel(
+                `${suggestion.title} — ${suggestion.summary ?? ""}`.trim(),
+              );
+            }}
+          />
+        </SearchFieldRow>
+        <SearchSelection>
+          {selectedGuideLabel === null
+            ? "No guide selected yet — pick one from the dropdown."
+            : `Selected: ${selectedGuideLabel}`}
+        </SearchSelection>
       </Card>
 
       <Card>
