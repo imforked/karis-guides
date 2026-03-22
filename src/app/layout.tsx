@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import { AppShell, GlobalStyles } from "./globals.styles";
 import StyledComponentsRegistry from "./lib/registry";
 
 export const metadata: Metadata = {
@@ -15,7 +15,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <StyledComponentsRegistry>
-        <body>{children}</body>
+        <body>
+          <GlobalStyles />
+          <AppShell>{children}</AppShell>
+        </body>
       </StyledComponentsRegistry>
     </html>
   );
