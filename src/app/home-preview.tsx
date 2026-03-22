@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/Button";
+import { Drawer } from "@/components/Drawer";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -77,8 +78,25 @@ const EdgeHint = styled.div`
   line-height: 1.4;
 `;
 
+const DrawerDemoBody = styled.div`
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+const DrawerDemoText = styled.p`
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: ${({ theme }) => theme.color.textMuted};
+`;
+
 export function HomePreview() {
   const [lastClick, setLastClick] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <PreviewMain>
@@ -107,7 +125,11 @@ export function HomePreview() {
           >
             Secondary
           </Button>
-          <Button type="button" variant="ghost" onClick={() => setLastClick("Ghost")}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => setLastClick("Ghost")}
+          >
             Ghost
           </Button>
           <Button type="button" size="sm" onClick={() => setLastClick("Small")}>
@@ -133,12 +155,37 @@ export function HomePreview() {
       </Card>
 
       <Card>
-        <CardTitle>Another block</CardTitle>
+        <CardTitle>Drawer</CardTitle>
         <CardBody>
-          If these cards align with the header above and don&apos;t stretch
-          past ~430px on a large monitor, the layout is behaving as intended.
+          Opens a left sheet (mobile-style navigation). Tap the backdrop, press
+          Escape, or use Close to dismiss.
         </CardBody>
+        <ButtonRow>
+          <Button type="button" onClick={() => setDrawerOpen(true)}>
+            Open drawer
+          </Button>
+        </ButtonRow>
       </Card>
+
+      <Drawer
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+        aria-label="Preview drawer"
+      >
+        <DrawerDemoBody>
+          <DrawerDemoText>
+            Example panel content — e.g. folder tree or filters. Scroll if you
+            add a long list here.
+          </DrawerDemoText>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setDrawerOpen(false)}
+          >
+            Close
+          </Button>
+        </DrawerDemoBody>
+      </Drawer>
 
       <EdgeHint>
         Tip: widen the browser — you should see empty gutters left and right.
