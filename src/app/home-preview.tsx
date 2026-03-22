@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/Button";
+import { useState } from "react";
 import styled from "styled-components";
 
 const PreviewMain = styled.main`
@@ -51,6 +53,21 @@ const CardBody = styled.p`
   color: ${({ theme }) => theme.color.textMuted};
 `;
 
+const ButtonRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+`;
+
+const ClickFeedback = styled.p`
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: ${({ theme }) => theme.color.foreground};
+`;
+
 const EdgeHint = styled.div`
   margin-top: auto;
   padding-top: 1rem;
@@ -61,6 +78,8 @@ const EdgeHint = styled.div`
 `;
 
 export function HomePreview() {
+  const [lastClick, setLastClick] = useState<string | null>(null);
+
   return (
     <PreviewMain>
       <TopBar>
@@ -77,6 +96,40 @@ export function HomePreview() {
           Placeholder copy so you can scroll and confirm the content stays
           inside the centered phone-width column on desktop.
         </CardBody>
+        <ButtonRow>
+          <Button type="button" onClick={() => setLastClick("Primary")}>
+            Primary
+          </Button>
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => setLastClick("Secondary")}
+          >
+            Secondary
+          </Button>
+          <Button type="button" variant="ghost" onClick={() => setLastClick("Ghost")}>
+            Ghost
+          </Button>
+          <Button type="button" size="sm" onClick={() => setLastClick("Small")}>
+            Small
+          </Button>
+          <Button
+            type="button"
+            size="lg"
+            variant="secondary"
+            onClick={() => setLastClick("Large")}
+          >
+            Large
+          </Button>
+          <Button type="button" disabled>
+            Disabled
+          </Button>
+        </ButtonRow>
+        <ClickFeedback>
+          {lastClick === null
+            ? "Click a button above — the label you pressed will show here."
+            : `You clicked: ${lastClick}`}
+        </ClickFeedback>
       </Card>
 
       <Card>
