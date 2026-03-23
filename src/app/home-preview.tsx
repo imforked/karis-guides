@@ -1,8 +1,10 @@
 "use client";
 
 import { Button } from "@/components/Button";
+import { CategoryNav } from "@/components/CategoryNav";
 import { Drawer } from "@/components/Drawer";
 import { SearchBar } from "@/components/SearchBar";
+import { GUIDES } from "@/data/guides";
 import { useMemo, useState } from "react";
 import styled from "styled-components";
 
@@ -95,25 +97,6 @@ const DrawerDemoText = styled.p`
   color: ${({ theme }) => theme.color.textMuted};
 `;
 
-/** Stand-in for entries you’ll load from JSON metadata files later */
-const SAMPLE_GUIDE_METADATA = [
-  {
-    id: "north-loop",
-    title: "North Loop Trail",
-    summary: "Moderate day hike with creek crossings and ridge views.",
-  },
-  {
-    id: "old-fire-road",
-    title: "Old Fire Road",
-    summary: "Wide gravel route; good for families and strollers.",
-  },
-  {
-    id: "summit-spur",
-    title: "Summit Spur",
-    summary: "Short steep climb from the main loop to the lookout.",
-  },
-] as const;
-
 const SearchFieldRow = styled.div`
   margin-top: 0.75rem;
 `;
@@ -136,10 +119,11 @@ export function HomePreview() {
   const searchMatches = useMemo(() => {
     const normalized = searchQuery.trim().toLowerCase();
     if (normalized === "") {
-      return [...SAMPLE_GUIDE_METADATA];
+      return [...GUIDES];
     }
-    return SAMPLE_GUIDE_METADATA.filter((entry) => {
-      const haystack = `${entry.title} ${entry.summary}`.toLowerCase();
+    return GUIDES.filter((entry) => {
+      const tags = entry.tags.join(" ");
+      const haystack = `${entry.title} ${entry.summary} ${tags}`.toLowerCase();
       return haystack.includes(normalized);
     });
   }, [searchQuery]);
@@ -201,10 +185,20 @@ export function HomePreview() {
       </Card>
 
       <Card>
+        <CardTitle>Categories</CardTitle>
+        <CardBody>
+          Tap a tag to see every guide that lists that category. Tags are the
+          single source of truth in{" "}
+          <code style={{ fontSize: "0.8125rem" }}>src/data/guides.ts</code>.
+        </CardBody>
+        <CategoryNav />
+      </Card>
+
+      <Card>
         <CardTitle>Search</CardTitle>
         <CardBody>
-          Focus the field or type to open a dropdown of matches. Click a row to
-          select — same idea once JSON metadata drives the list.
+          Focus the field or type to open a dropdown of matches from the guide
+          registry (title, summary, and tags).
         </CardBody>
         <SearchFieldRow>
           <SearchBar
