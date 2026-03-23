@@ -19,6 +19,8 @@ export const appTheme = {
   layout: {
     /** Largest common phone logical width; desktop shows gutters outside this column */
     appMaxWidth: "430px",
+    /** Vertical space for fixed app bar (padding + title line); keeps main content below header */
+    appHeaderOffset: "3.25rem",
   },
   color: {
     background: cream,

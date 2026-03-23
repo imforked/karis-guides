@@ -1,10 +1,12 @@
+import { AppFrame } from "@/components/AppFrame";
 import type { Metadata } from "next";
 import { AppShell, GlobalStyles } from "./globals.styles";
 import StyledComponentsRegistry from "./lib/registry";
 
 export const metadata: Metadata = {
   title: "Kari's Guides",
-  description: "Kari's Guides",
+  description:
+    "Offline survival and field guides — search, topics, and PDFs on your network.",
 };
 
 export default function RootLayout({
@@ -17,7 +19,9 @@ export default function RootLayout({
       <StyledComponentsRegistry>
         <body>
           <GlobalStyles />
-          <AppShell>{children}</AppShell>
+          <AppShell>
+            <AppFrame>{children}</AppFrame>
+          </AppShell>
         </body>
       </StyledComponentsRegistry>
     </html>
