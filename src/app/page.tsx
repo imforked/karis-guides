@@ -1,5 +1,5 @@
-import { HomePreview } from "./home-preview";
+import { HomeView } from "./home-view";
 
 export default function Home() {
-  return <HomePreview />;
+  return <HomeView />;
 }
