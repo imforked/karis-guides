@@ -121,18 +121,6 @@ export const DrawerSectionLabel = styled.p`
   color: ${({ theme }) => theme.color.textMuted};
 `;
 
-export const NavLink = styled(Link)`
-  display: block;
-  padding: 0.5rem 0;
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.color.foreground};
-
-  &:hover {
-    color: ${({ theme }) => theme.palette.earth};
-  }
-`;
-
 export const PlaceholderNav = styled.p`
   font-size: 0.875rem;
   line-height: 1.45;

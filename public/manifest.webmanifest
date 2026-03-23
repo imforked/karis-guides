@@ -1,0 +1,23 @@
+{
+  "name": "Kari's Guides",
+  "short_name": "Kari's Guides",
+  "description": "Survival and field references — search, topics, and PDFs.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#EEDFCD",
+  "theme_color": "#BBA387",
+  "icons": [
+    {
+      "src": "/pwa-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

@@ -2,7 +2,14 @@
 
 import { Button } from "@/components/Button";
 import { CategoryNav } from "@/components/CategoryNav";
+import {
+  DrawerRowActionButton,
+  DrawerRowActionLink,
+} from "@/components/DrawerRowAction";
 import { Drawer } from "@/components/Drawer";
+import { InstallHelpDialog } from "@/components/InstallHelpDialog";
+import { PwaInstallBanner } from "@/components/PwaInstallBanner";
+import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { useState } from "react";
 import {
   Brand,
@@ -13,7 +20,6 @@ import {
   DrawerSectionLabel,
   Header,
   Main,
-  NavLink,
   PlaceholderNav,
   Root,
 } from "./AppFrame.styles";
@@ -21,6 +27,12 @@ import type { AppFrameProps } from "./AppFrame.types";
 
 export function AppFrame({ children }: AppFrameProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const pwa = usePwaInstall();
+
+  const handleAddToHomeFromMenu = () => {
+    setDrawerOpen(false);
+    void pwa.promptInstall();
+  };
 
   return (
     <Root>
@@ -62,10 +74,27 @@ export function AppFrame({ children }: AppFrameProps) {
 
           <DrawerScrollArea>
             <nav aria-label="Primary">
-              <NavLink href="/" onClick={() => setDrawerOpen(false)}>
+              <DrawerRowActionLink
+                href="/"
+                onClick={() => setDrawerOpen(false)}
+              >
                 Back to Home
-              </NavLink>
+              </DrawerRowActionLink>
             </nav>
+
+            {pwa.mounted && !pwa.isStandalone ? (
+              <div>
+                <DrawerSectionLabel>App</DrawerSectionLabel>
+                <nav aria-label="App">
+                  <DrawerRowActionButton
+                    type="button"
+                    onClick={handleAddToHomeFromMenu}
+                  >
+                    Add to Home Screen
+                  </DrawerRowActionButton>
+                </nav>
+              </div>
+            ) : null}
 
             <div>
               <DrawerSectionLabel>Map</DrawerSectionLabel>
@@ -82,6 +111,22 @@ export function AppFrame({ children }: AppFrameProps) {
           </DrawerScrollArea>
         </DrawerBody>
       </Drawer>
+
+      {pwa.showBanner ? (
+        <PwaInstallBanner
+          onAdd={() => {
+            void pwa.promptInstall();
+          }}
+          onHowTo={pwa.openHelp}
+          onDismiss={pwa.dismissBanner}
+        />
+      ) : null}
+
+      <InstallHelpDialog
+        open={pwa.helpOpen}
+        onClose={pwa.closeHelp}
+        isIos={pwa.isIos}
+      />
     </Root>
   );
 }
