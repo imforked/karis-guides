@@ -76,3 +76,19 @@ export const guidePublicHref = (fileName: string): string => {
 export const getGuidesByTag = (tag: CategoryTag): readonly Guide[] => {
   return GUIDES.filter((guide) => guide.tags.includes(tag));
 };
+
+/** Case-insensitive match on title, summary, and tags. */
+export const filterGuidesByQuery = (
+  guides: readonly Guide[],
+  query: string
+): Guide[] => {
+  const normalized = query.trim().toLowerCase();
+  if (normalized === "") {
+    return [...guides];
+  }
+  return guides.filter((entry) => {
+    const tags = entry.tags.join(" ");
+    const haystack = `${entry.title} ${entry.summary} ${tags}`.toLowerCase();
+    return haystack.includes(normalized);
+  });
+};
