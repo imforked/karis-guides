@@ -35,28 +35,41 @@ export function SearchBar({
   ...rest
 }: SearchBarProps) {
   const listboxId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [listOpen, setListOpen] = useState(false);
-  const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const blurCloseRafRef = useRef<number | null>(null);
 
-  const clearBlurTimeout = useCallback(() => {
-    if (blurTimeoutRef.current !== null) {
-      clearTimeout(blurTimeoutRef.current);
-      blurTimeoutRef.current = null;
+  const cancelBlurClose = useCallback(() => {
+    if (blurCloseRafRef.current !== null) {
+      cancelAnimationFrame(blurCloseRafRef.current);
+      blurCloseRafRef.current = null;
     }
   }, []);
 
   useEffect(() => {
-    return () => clearBlurTimeout();
-  }, [clearBlurTimeout]);
+    return () => cancelBlurClose();
+  }, [cancelBlurClose]);
+
+  const showDropdown = listOpen && suggestions.length > 0;
+
+  useEffect(() => {
+    if (!showDropdown) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) {
+        cancelBlurClose();
+        setListOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown, true);
+    return () => document.removeEventListener("pointerdown", onPointerDown, true);
+  }, [showDropdown, cancelBlurClose]);
 
   useEffect(() => {
     if (suggestions.length === 0) {
       setListOpen(false);
     }
   }, [suggestions.length]);
-
-  const showDropdown = listOpen && suggestions.length > 0;
 
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     onFocus?.(event);
@@ -67,14 +80,28 @@ export function SearchBar({
 
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
     onBlur?.(event);
-    blurTimeoutRef.current = setTimeout(() => {
+    const next = event.relatedTarget as Node | null;
+    if (next && rootRef.current?.contains(next)) {
+      return;
+    }
+    if (next && rootRef.current && !rootRef.current.contains(next)) {
+      cancelBlurClose();
       setListOpen(false);
-    }, 180);
+      return;
+    }
+    cancelBlurClose();
+    blurCloseRafRef.current = requestAnimationFrame(() => {
+      blurCloseRafRef.current = null;
+      if (!rootRef.current?.contains(document.activeElement)) {
+        setListOpen(false);
+      }
+    });
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(event);
     if (event.key === "Escape") {
+      cancelBlurClose();
       setListOpen(false);
     }
   };
@@ -93,13 +120,13 @@ export function SearchBar({
 
   const handleSelect = (suggestion: SearchSuggestion) => {
     onSuggestionSelect?.(suggestion);
-    clearBlurTimeout();
+    cancelBlurClose();
     setListOpen(false);
     inputRef.current?.blur();
   };
 
   return (
-    <Root role="search">
+    <Root ref={rootRef} role="search">
       <Input
         ref={inputRef}
         type="search"
