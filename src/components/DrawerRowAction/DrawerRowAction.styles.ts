@@ -5,7 +5,6 @@ const drawerRowActionBase = css`
   display: block;
   width: 100%;
   text-align: left;
-  padding: 0.5rem 0;
   font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 600;

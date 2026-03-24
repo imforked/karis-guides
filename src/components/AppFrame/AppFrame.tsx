@@ -17,6 +17,8 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerScrollArea,
+  DrawerSection,
+  DrawerSectionNav,
   DrawerVisuallyHiddenTitle,
   DrawerSectionLabel,
   Header,
@@ -79,48 +81,59 @@ export function AppFrame({ children }: AppFrameProps) {
           </DrawerCloseButton>
 
           <DrawerScrollArea>
-            <nav aria-label="Primary">
-              <DrawerRowActionLink
-                href="/"
-                onClick={() => setDrawerOpen(false)}
-              >
-                Back to Home
-              </DrawerRowActionLink>
-              <DrawerRowActionButton
-                type="button"
-                aria-label="Open a random guide PDF in a new tab"
-                onClick={handleRandomGuide}
-              >
-                Get a Random Guide
-              </DrawerRowActionButton>
-            </nav>
+            <DrawerSection aria-labelledby="drawer-section-quick">
+              <DrawerSectionLabel id="drawer-section-quick">
+                Quick links
+              </DrawerSectionLabel>
+              <DrawerSectionNav aria-label="Quick links">
+                <DrawerRowActionLink
+                  href="/"
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  Back to Home
+                </DrawerRowActionLink>
+                <DrawerRowActionButton
+                  type="button"
+                  aria-label="Open a random guide PDF in a new tab"
+                  onClick={handleRandomGuide}
+                >
+                  Get a Random Guide
+                </DrawerRowActionButton>
+              </DrawerSectionNav>
+            </DrawerSection>
 
             {pwa.mounted && !pwa.isStandalone ? (
-              <div>
-                <DrawerSectionLabel>App</DrawerSectionLabel>
-                <nav aria-label="App">
+              <DrawerSection aria-labelledby="drawer-section-app">
+                <DrawerSectionLabel id="drawer-section-app">
+                  Install
+                </DrawerSectionLabel>
+                <DrawerSectionNav aria-label="Install app">
                   <DrawerRowActionButton
                     type="button"
                     onClick={handleAddToHomeFromMenu}
                   >
                     Add to Home Screen
                   </DrawerRowActionButton>
-                </nav>
-              </div>
+                </DrawerSectionNav>
+              </DrawerSection>
             ) : null}
 
-            <div>
-              <DrawerSectionLabel>Map</DrawerSectionLabel>
+            <DrawerSection aria-labelledby="drawer-section-map">
+              <DrawerSectionLabel id="drawer-section-map">
+                Map
+              </DrawerSectionLabel>
               <PlaceholderNav>
                 Vector map will open here when that feature ships. Works fully
                 offline on your network.
               </PlaceholderNav>
-            </div>
+            </DrawerSection>
 
-            <div>
-              <DrawerSectionLabel>Browse by topic</DrawerSectionLabel>
+            <DrawerSection aria-labelledby="drawer-section-topics">
+              <DrawerSectionLabel id="drawer-section-topics">
+                Browse by topic
+              </DrawerSectionLabel>
               <CategoryNav onNavigate={() => setDrawerOpen(false)} />
-            </div>
+            </DrawerSection>
           </DrawerScrollArea>
         </DrawerBody>
       </Drawer>

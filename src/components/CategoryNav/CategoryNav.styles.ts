@@ -5,7 +5,7 @@ export const TagGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  margin: 0;
 `;
 
 export const TagLink = styled(Link)`

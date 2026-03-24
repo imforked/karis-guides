@@ -110,10 +110,33 @@ export const DrawerScrollArea = styled.div`
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.5rem;
+`;
+
+/** Groups a drawer heading with its content so spacing matches every block. */
+export const DrawerSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+
+  /* Keep section-to-section rhythm from DrawerScrollArea gap only */
+  & > :last-child {
+    margin-block-end: 0;
+  }
+`;
+
+/** Row-action stacks; resets UA nav margins so vertical rhythm matches other sections */
+export const DrawerSectionNav = styled.nav`
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
 `;
 
 export const DrawerSectionLabel = styled.p`
+  margin: 0;
   font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -122,6 +145,7 @@ export const DrawerSectionLabel = styled.p`
 `;
 
 export const PlaceholderNav = styled.p`
+  margin: 0;
   font-size: 0.875rem;
   line-height: 1.45;
   color: ${({ theme }) => theme.color.textMuted};
