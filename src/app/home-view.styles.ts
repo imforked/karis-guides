@@ -27,6 +27,14 @@ export const Intro = styled.p`
   color: ${({ theme }) => theme.color.textMuted};
 `;
 
+export const RandomGuideRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+`;
+
 export const SearchFieldRow = styled.div`
   margin-top: 0.25rem;
 `;

@@ -73,6 +73,30 @@ export const guidePublicHref = (fileName: string): string => {
   return `/guides/${encodeURIComponent(fileName)}`;
 };
 
+/** Uniform random choice from `GUIDES`. */
+export function pickRandomGuide(): Guide {
+  if (GUIDES.length === 0) {
+    throw new Error("pickRandomGuide: no guides registered");
+  }
+  const index = Math.floor(Math.random() * GUIDES.length);
+  return GUIDES[index];
+}
+
+/**
+ * Open a guide PDF in a new tab. For use from client event handlers only
+ * (uses `document`).
+ */
+export function openGuidePdfInNewTab(guide: Guide): void {
+  if (typeof document === "undefined") {
+    return;
+  }
+  const anchor = document.createElement("a");
+  anchor.href = guidePublicHref(guide.fileName);
+  anchor.target = "_blank";
+  anchor.rel = "noopener noreferrer";
+  anchor.click();
+}
+
 export const getGuidesByTag = (tag: CategoryTag): readonly Guide[] => {
   return GUIDES.filter((guide) => guide.tags.includes(tag));
 };

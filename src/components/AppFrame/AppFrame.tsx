@@ -9,6 +9,7 @@ import {
 import { Drawer } from "@/components/Drawer";
 import { InstallHelpDialog } from "@/components/InstallHelpDialog";
 import { PwaInstallBanner } from "@/components/PwaInstallBanner";
+import { openGuidePdfInNewTab, pickRandomGuide } from "@/data/guides";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { useState } from "react";
 import {
@@ -32,6 +33,11 @@ export function AppFrame({ children }: AppFrameProps) {
   const handleAddToHomeFromMenu = () => {
     setDrawerOpen(false);
     void pwa.promptInstall();
+  };
+
+  const handleRandomGuide = () => {
+    setDrawerOpen(false);
+    openGuidePdfInNewTab(pickRandomGuide());
   };
 
   return (
@@ -80,6 +86,13 @@ export function AppFrame({ children }: AppFrameProps) {
               >
                 Back to Home
               </DrawerRowActionLink>
+              <DrawerRowActionButton
+                type="button"
+                aria-label="Open a random guide PDF in a new tab"
+                onClick={handleRandomGuide}
+              >
+                Get a Random Guide
+              </DrawerRowActionButton>
             </nav>
 
             {pwa.mounted && !pwa.isStandalone ? (

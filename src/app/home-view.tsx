@@ -1,14 +1,21 @@
 "use client";
 
+import { Button } from "@/components/Button";
 import { GuideListItem } from "@/components/GuideListItem";
 import { SearchBar } from "@/components/SearchBar";
-import { GUIDES, filterGuidesByQuery } from "@/data/guides";
+import {
+  GUIDES,
+  filterGuidesByQuery,
+  openGuidePdfInNewTab,
+  pickRandomGuide,
+} from "@/data/guides";
 import { useMemo, useState } from "react";
 import {
   EmptyState,
   Intro,
   List,
   Main,
+  RandomGuideRow,
   SearchFieldRow,
   SectionTitle,
   VisuallyHiddenH1,
@@ -26,9 +33,24 @@ export function HomeView() {
     <Main>
       <VisuallyHiddenH1>Kari&apos;s Guides</VisuallyHiddenH1>
       <Intro>
-        Survival and field references for offline use. Search or open the menu
-        to browse by topic. PDFs open in a new tab.
+        Survival and field references for offline use. Search, let Kari pick a
+        random guide, or open the menu to browse by topic. PDFs open in a new
+        tab.
       </Intro>
+
+      <RandomGuideRow>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          aria-label="Open a random guide PDF in a new tab"
+          onClick={() => {
+            openGuidePdfInNewTab(pickRandomGuide());
+          }}
+        >
+          Get a random guide
+        </Button>
+      </RandomGuideRow>
 
       <div>
         <SearchFieldRow>
