@@ -190,6 +190,29 @@ export const GUIDES: readonly Guide[] = [
       "preservation",
     ],
   },
+  {
+    id: "marine-corps-martial-arts-program",
+    title: "The Marine Corps Martial Arts Program",
+    summary: "USMC close combat and martial arts program reference.",
+    fileName: "the-marine-corps-martial-arts-program.pdf",
+    tags: [
+      "emergency",
+      "urban",
+      "wilderness",
+      "knife",
+      "medical",
+      "tools",
+      "improvisation",
+      "repair",
+    ],
+  },
+  {
+    id: "put-em-down-take-em-out",
+    title: "Put 'Em Down, Take 'Em Out",
+    summary: "Knife fighting and close-quarters combatives reference.",
+    fileName: "put-em-down-take-em-out.pdf",
+    tags: ["emergency", "urban", "knife", "medical", "tools", "improvisation"],
+  },
 ];
 
 export const guidePublicHref = (fileName: string): string => {
