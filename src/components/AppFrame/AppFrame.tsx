@@ -115,6 +115,12 @@ export function AppFrame({ children }: AppFrameProps) {
                 >
                   Get a Random Guide
                 </DrawerRowActionButton>
+                <DrawerRowActionLink
+                  href="/morse-code"
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  Morse code generator
+                </DrawerRowActionLink>
               </DrawerSectionNav>
             </DrawerSection>
 
