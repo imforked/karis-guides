@@ -22,11 +22,17 @@ import {
 } from "./home-view.styles";
 
 export function HomeView() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [draftQuery, setDraftQuery] = useState("");
+  const [appliedQuery, setAppliedQuery] = useState("");
 
-  const filteredGuides = useMemo(
-    () => filterGuidesByQuery(GUIDES, searchQuery),
-    [searchQuery],
+  const listGuides = useMemo(
+    () => filterGuidesByQuery(GUIDES, appliedQuery),
+    [appliedQuery],
+  );
+
+  const suggestionGuides = useMemo(
+    () => filterGuidesByQuery(GUIDES, draftQuery),
+    [draftQuery],
   );
 
   return (
@@ -55,21 +61,22 @@ export function HomeView() {
       <div>
         <SearchFieldRow>
           <SearchBar
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
+            value={draftQuery}
+            onChange={(event) => setDraftQuery(event.target.value)}
+            onSearch={() => setAppliedQuery(draftQuery)}
+            searchButtonAriaLabel="Filter the guide list"
             placeholder="Search guides…"
             aria-label="Search guides"
-            suggestions={filteredGuides.map((entry) => ({
+            suggestions={suggestionGuides.map((entry) => ({
               id: entry.id,
               title: entry.title,
               summary: entry.summary,
             }))}
             onSuggestionSelect={(suggestion) => {
-              requestAnimationFrame(() => {
-                document
-                  .getElementById(`guide-${suggestion.id}`)
-                  ?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-              });
+              const guide = GUIDES.find((g) => g.id === suggestion.id);
+              if (guide) {
+                openGuidePdfInNewTab(guide);
+              }
             }}
           />
         </SearchFieldRow>
@@ -77,13 +84,13 @@ export function HomeView() {
 
       <section aria-labelledby="guides-heading">
         <SectionTitle id="guides-heading">
-          Guides ({filteredGuides.length})
+          Guides ({listGuides.length})
         </SectionTitle>
-        {filteredGuides.length === 0 ? (
+        {listGuides.length === 0 ? (
           <EmptyState>No guides match your search.</EmptyState>
         ) : (
           <List>
-            {filteredGuides.map((guide) => (
+            {listGuides.map((guide) => (
               <GuideListItem
                 key={guide.id}
                 guide={guide}

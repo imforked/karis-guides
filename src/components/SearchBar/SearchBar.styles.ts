@@ -5,11 +5,18 @@ export const Root = styled.div`
   width: 100%;
 `;
 
-export const Input = styled.input`
+export const FieldWrap = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+export const Input = styled.input<{ $withSearchButton?: boolean }>`
   display: block;
   width: 100%;
   box-sizing: border-box;
   padding: 0.5rem 0.75rem;
+  padding-right: ${({ $withSearchButton }) =>
+    $withSearchButton ? "2.65rem" : "0.75rem"};
   font-size: 0.9375rem;
   line-height: 1.35;
   font-weight: 500;
@@ -37,6 +44,44 @@ export const Input = styled.input`
   &:focus-visible {
     border-color: ${({ theme }) => theme.palette.earth};
     box-shadow: 0 0 0 2px ${({ theme }) => theme.color.accent};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+`;
+
+export const SearchAffixButton = styled.button`
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  bottom: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  color: ${({ theme }) => theme.color.textMuted};
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover:not(:disabled) {
+    color: ${({ theme }) => theme.color.foreground};
+    background: ${({ theme }) => theme.color.surface};
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    color: ${({ theme }) => theme.color.foreground};
+    box-shadow: inset 0 0 0 2px ${({ theme }) => theme.color.accent};
   }
 
   &:disabled {

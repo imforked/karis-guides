@@ -16,8 +16,10 @@ import {
   Dropdown,
   DropdownList,
   DropdownListItem,
+  FieldWrap,
   Input,
   Root,
+  SearchAffixButton,
 } from "./SearchBar.styles";
 import type { SearchBarProps, SearchSuggestion } from "./SearchBar.types";
 
@@ -27,6 +29,8 @@ export function SearchBar({
   disabled,
   suggestions = [],
   onSuggestionSelect,
+  onSearch,
+  searchButtonAriaLabel = "Search",
   onFocus,
   onBlur,
   onKeyDown,
@@ -50,6 +54,15 @@ export function SearchBar({
   useEffect(() => {
     return () => cancelBlurClose();
   }, [cancelBlurClose]);
+
+  const runSearch = useCallback(() => {
+    if (!onSearch || disabled) {
+      return;
+    }
+    cancelBlurClose();
+    setListOpen(false);
+    onSearch();
+  }, [cancelBlurClose, disabled, onSearch]);
 
   const showDropdown = listOpen && suggestions.length > 0;
 
@@ -104,6 +117,15 @@ export function SearchBar({
       cancelBlurClose();
       setListOpen(false);
     }
+    if (
+      event.key === "Enter" &&
+      onSearch &&
+      !event.defaultPrevented &&
+      !disabled
+    ) {
+      event.preventDefault();
+      runSearch();
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -127,24 +149,60 @@ export function SearchBar({
 
   return (
     <Root ref={rootRef} role="search">
-      <Input
-        ref={inputRef}
-        type="search"
-        enterKeyHint="search"
-        placeholder={placeholder}
-        aria-label={ariaLabel}
-        aria-expanded={showDropdown}
-        aria-controls={showDropdown ? listboxId : undefined}
-        aria-autocomplete="list"
-        aria-haspopup="listbox"
-        disabled={disabled}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-        onChange={handleChange}
-        onClick={handleClick}
-        {...rest}
-      />
+      <FieldWrap>
+        <Input
+          ref={inputRef}
+          type="search"
+          enterKeyHint="search"
+          placeholder={placeholder}
+          aria-label={ariaLabel}
+          aria-expanded={showDropdown}
+          aria-controls={showDropdown ? listboxId : undefined}
+          aria-autocomplete="list"
+          aria-haspopup="listbox"
+          disabled={disabled}
+          $withSearchButton={Boolean(onSearch)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+          onChange={handleChange}
+          onClick={handleClick}
+          {...rest}
+        />
+        {onSearch ? (
+          <SearchAffixButton
+            type="button"
+            disabled={disabled}
+            aria-label={searchButtonAriaLabel}
+            onPointerDown={(event) => event.preventDefault()}
+            onClick={runSearch}
+          >
+            <svg
+              width={20}
+              height={20}
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden
+              focusable="false"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="6.5"
+                stroke="currentColor"
+                strokeWidth={2}
+              />
+              <path
+                d="M16.5 16.5L21 21"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+              />
+            </svg>
+          </SearchAffixButton>
+        ) : null}
+      </FieldWrap>
       {showDropdown ? (
         <Dropdown id={listboxId} role="listbox" aria-label={ariaLabel}>
           <DropdownList>
