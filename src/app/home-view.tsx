@@ -27,12 +27,12 @@ export function HomeView() {
 
   const listGuides = useMemo(
     () => filterGuidesByQuery(GUIDES, appliedQuery),
-    [appliedQuery],
+    [appliedQuery]
   );
 
   const suggestionGuides = useMemo(
     () => filterGuidesByQuery(GUIDES, draftQuery),
-    [draftQuery],
+    [draftQuery]
   );
 
   return (
@@ -62,7 +62,13 @@ export function HomeView() {
         <SearchFieldRow>
           <SearchBar
             value={draftQuery}
-            onChange={(event) => setDraftQuery(event.target.value)}
+            onChange={(event) => {
+              const value = event.target.value;
+              setDraftQuery(value);
+              if (value.trim() === "") {
+                setAppliedQuery("");
+              }
+            }}
             onSearch={() => setAppliedQuery(draftQuery)}
             searchButtonAriaLabel="Filter the guide list"
             placeholder="Search guides…"
