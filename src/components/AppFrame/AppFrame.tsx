@@ -119,7 +119,7 @@ export function AppFrame({ children }: AppFrameProps) {
                   href="/morse-code"
                   onClick={() => setDrawerOpen(false)}
                 >
-                  Morse code generator
+                  Morse Code Generator
                 </DrawerRowActionLink>
               </DrawerSectionNav>
             </DrawerSection>
