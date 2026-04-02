@@ -32,7 +32,6 @@ export const RandomGuideRow = styled.div`
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  margin-top: 0.5rem;
 `;
 
 export const SearchFieldRow = styled.div`
