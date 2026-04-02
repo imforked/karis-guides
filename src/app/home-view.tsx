@@ -3,12 +3,8 @@
 import { Button } from "@/components/Button";
 import { GuideListItem } from "@/components/GuideListItem";
 import { SearchBar } from "@/components/SearchBar";
-import {
-  GUIDES,
-  filterGuidesByQuery,
-  openGuidePdfInNewTab,
-  pickRandomGuide,
-} from "@/data/guides";
+import { GUIDES, filterGuidesByQuery, pickRandomGuide } from "@/data/guides";
+import { openGuidePdfWithHistory } from "@/lib/openGuidePdfWithHistory";
 import { useMemo, useState } from "react";
 import {
   EmptyState,
@@ -39,9 +35,7 @@ export function HomeView() {
     <Main>
       <VisuallyHiddenH1>Kari&apos;s Guides</VisuallyHiddenH1>
       <Intro>
-        Survival and field references for offline use. Search, let Kari pick a
-        random guide, or open the menu to browse by topic. PDFs open in a new
-        tab.
+        Survival and field guides when you don't have internet.
       </Intro>
 
       <RandomGuideRow>
@@ -51,7 +45,7 @@ export function HomeView() {
           size="sm"
           aria-label="Open a random guide PDF in a new tab"
           onClick={() => {
-            openGuidePdfInNewTab(pickRandomGuide());
+            openGuidePdfWithHistory(pickRandomGuide());
           }}
         >
           Get a random guide
@@ -81,7 +75,7 @@ export function HomeView() {
             onSuggestionSelect={(suggestion) => {
               const guide = GUIDES.find((g) => g.id === suggestion.id);
               if (guide) {
-                openGuidePdfInNewTab(guide);
+                openGuidePdfWithHistory(guide);
               }
             }}
           />

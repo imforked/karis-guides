@@ -9,7 +9,8 @@ import {
 import { Drawer } from "@/components/Drawer";
 import { InstallHelpDialog } from "@/components/InstallHelpDialog";
 import { PwaInstallBanner } from "@/components/PwaInstallBanner";
-import { openGuidePdfInNewTab, pickRandomGuide } from "@/data/guides";
+import { pickRandomGuide } from "@/data/guides";
+import { openGuidePdfWithHistory } from "@/lib/openGuidePdfWithHistory";
 import { usePwaInstall } from "@/hooks/usePwaInstall";
 import { useState } from "react";
 import {
@@ -39,7 +40,7 @@ export function AppFrame({ children }: AppFrameProps) {
 
   const handleRandomGuide = () => {
     setDrawerOpen(false);
-    openGuidePdfInNewTab(pickRandomGuide());
+    openGuidePdfWithHistory(pickRandomGuide());
   };
 
   return (
@@ -120,6 +121,12 @@ export function AppFrame({ children }: AppFrameProps) {
                   onClick={() => setDrawerOpen(false)}
                 >
                   Morse Code Generator
+                </DrawerRowActionLink>
+                <DrawerRowActionLink
+                  href="/recent"
+                  onClick={() => setDrawerOpen(false)}
+                >
+                  Recently Viewed
                 </DrawerRowActionLink>
               </DrawerSectionNav>
             </DrawerSection>

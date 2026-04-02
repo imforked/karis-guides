@@ -1,6 +1,7 @@
 "use client";
 
 import { guidePublicHref } from "@/data/guides";
+import { recordGuideViewed } from "@/lib/recentlyViewedGuides";
 import {
   OpenPdf,
   Root,
@@ -33,6 +34,9 @@ export function GuideListItem({
         href={guidePublicHref(guide.fileName)}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => {
+          recordGuideViewed(guide);
+        }}
       >
         Open PDF
       </OpenPdf>

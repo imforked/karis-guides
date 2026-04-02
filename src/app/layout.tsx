@@ -6,7 +6,7 @@ import StyledComponentsRegistry from "./lib/registry";
 export const metadata: Metadata = {
   title: "Kari's Guides",
   description:
-    "Offline survival and field guides — search, topics, and PDFs on your network.",
+    "Survival and field guides when you don't have internet.",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,

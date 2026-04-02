@@ -1,7 +1,7 @@
 {
   "name": "Kari's Guides",
   "short_name": "Kari's Guides",
-  "description": "Survival and field references — search, topics, and PDFs.",
+  "description": "Survival and field guides when you don't have internet access.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#EEDFCD",
