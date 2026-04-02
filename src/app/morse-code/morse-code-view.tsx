@@ -83,9 +83,9 @@ export function MorseCodeView() {
     <Main>
       <PageIntro>
         <BackLink href="/">← Home</BackLink>
-        <Title>Morse code generator</Title>
+        <Title>Morse Code Generator</Title>
         <Lead>
-          International Morse code (ITU). Dots are shown as periods and dashes
+          International Morse code. Dots are shown as periods and dashes
           as hyphens. Letters, numbers, and a set of punctuation marks are
           supported; other characters are skipped.
         </Lead>
