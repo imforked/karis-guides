@@ -14,8 +14,7 @@ export function PwaInstallBanner({
       <Panel>
         <Title id="pwa-install-title">Add to Home Screen</Title>
         <Body>
-          Install Kari&apos;s Guides for quick access from your home
-          screen.
+          Install Kari&apos;s Guides on you home screen.
         </Body>
         <Actions>
           <Button type="button" size="sm" onClick={onAdd}>
