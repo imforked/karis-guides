@@ -9,6 +9,7 @@ import {
   MorseChunk,
   MorseVisual,
   MorseWord,
+  MorseWordSeparator,
   OutputHint,
   OutputPanel,
   OutputPlaceholder,
@@ -22,7 +23,7 @@ import {
   Title,
 } from "./morse-code.styles";
 import { encodeLatinToMorse } from "./morse-table";
-import { useId, useMemo, useState, type ReactNode } from "react";
+import { Fragment, useId, useMemo, useState, type ReactNode } from "react";
 
 function MorseVisualOutput({ morse }: { morse: string }) {
   const words = morse.split(" / ");
@@ -32,13 +33,16 @@ function MorseVisualOutput({ morse }: { morse: string }) {
       {words.map((word, wordIndex) => {
         const symbols = word.split(" ").filter((s) => s.length > 0);
         return (
-          <MorseWord key={`w-${wordIndex}`}>
-            {symbols.map((symbol, symIndex) => (
-              <MorseChunk key={`w-${wordIndex}-s-${symIndex}`}>
-                {symbol}
-              </MorseChunk>
-            ))}
-          </MorseWord>
+          <Fragment key={`w-${wordIndex}`}>
+            {wordIndex > 0 ? <MorseWordSeparator /> : null}
+            <MorseWord>
+              {symbols.map((symbol, symIndex) => (
+                <MorseChunk key={`w-${wordIndex}-s-${symIndex}`}>
+                  {symbol}
+                </MorseChunk>
+              ))}
+            </MorseWord>
+          </Fragment>
         );
       })}
     </MorseVisual>
@@ -110,9 +114,8 @@ export function MorseCodeView() {
           <FieldLabel id={outputLabelId}>
             Morse
             <OutputHint id={outputHintId}>
-              Each shaded box is one letter, digit, or punctuation sign. Wider
-              spacing separates words; tighter spacing separates letters within
-              a word.
+              Each shaded box is one letter, digit, or punctuation sign. A small
+              circle marks a space between words.
             </OutputHint>
           </FieldLabel>
           <OutputPanel
@@ -142,12 +145,6 @@ export function MorseCodeView() {
         Treat a dot as a short beat. A dash lasts about three beats. After each
         dot or dash within a letter, pause about one beat. Between letters,
         pause about three beats. Between words, pause about seven beats.
-      </TimingNote>
-      <TimingNote>
-        In this readout, each box is one letter, number, or punctuation sign.
-        The gap between boxes is smaller within a word and larger between words.
-        That is the same idea as the pauses above, shown here as spacing instead
-        of time.
       </TimingNote>
     </Main>
   );

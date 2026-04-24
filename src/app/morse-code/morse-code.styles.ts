@@ -166,6 +166,17 @@ export const MorseWord = styled.span`
   gap: 0.4rem;
 `;
 
+/** Visual word boundary (Morse inter-word gap); screen readers get ` / ` in OutputSrText. */
+export const MorseWordSeparator = styled.span`
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.color.textMuted};
+  box-shadow: 0 0 0 1px ${({ theme }) => theme.color.border};
+`;
+
 export const MorseChunk = styled.span`
   display: inline-block;
   padding: 0.2rem 0.35rem;
