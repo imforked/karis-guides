@@ -152,8 +152,7 @@ export function AppFrame({ children }: AppFrameProps) {
                 Map
               </DrawerSectionLabel>
               <PlaceholderNav>
-                Vector map will open here when that feature ships. Works fully
-                offline on your network.
+                Vector map will open here.
               </PlaceholderNav>
             </DrawerSection>
 
