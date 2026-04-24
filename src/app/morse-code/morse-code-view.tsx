@@ -51,7 +51,7 @@ export function MorseCodeView() {
 
   const { morse, skippedChars } = useMemo(
     () => encodeLatinToMorse(message),
-    [message],
+    [message]
   );
 
   const trimmed = message.trim();
@@ -85,8 +85,8 @@ export function MorseCodeView() {
         <BackLink href="/">← Home</BackLink>
         <Title>Morse Code Generator</Title>
         <Lead>
-          International Morse code. Dots are shown as periods and dashes
-          as hyphens. Letters, numbers, and a set of punctuation marks are
+          International Morse code. Dots are shown as periods and dashes as
+          hyphens. Letters, numbers, and a set of punctuation marks are
           supported; other characters are skipped.
         </Lead>
       </PageIntro>
@@ -139,16 +139,15 @@ export function MorseCodeView() {
       </Section>
 
       <TimingNote>
-        If you send Morse with taps, beeps, or flashes, treat one short beat as
-        a dot. A dash lasts about three beats. After each dot or dash inside a
-        letter, pause about one beat. Between two letters, pause about three
-        beats. Between two words, pause about seven beats.
+        Treat a dot as a short beat. A dash lasts about three beats. After each
+        dot or dash within a letter, pause about one beat. Between letters,
+        pause about three beats. Between words, pause about seven beats.
       </TimingNote>
       <TimingNote>
         In this readout, each box is one letter, number, or punctuation sign.
-        The gap between boxes is smaller within a word and larger between
-        words. That is the same idea as the pauses above, shown here as spacing
-        instead of time.
+        The gap between boxes is smaller within a word and larger between words.
+        That is the same idea as the pauses above, shown here as spacing instead
+        of time.
       </TimingNote>
     </Main>
   );
